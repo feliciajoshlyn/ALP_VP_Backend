@@ -1,0 +1,73 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  username String @db.VarChar(100)
+  password String @db.VarChar(100)
+  token String? @db.VarChar(100)
+
+  Whack_A_Mole Whack_A_Mole[]
+
+  Calendar Calendar[]
+
+  @@map("users")
+}
+
+model Whack_A_Mole {
+  id Int @id @default(autoincrement())
+  mole_chosen String @db.VarChar(100)
+  music_chosen String @db.VarChar(100)
+  timed_highscore Int @default(0)
+  endless_highscore Int @default(0)
+  intense_highscore Int @default(0)
+
+  user_id Int
+
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  @@map("whack_a_mole")
+}
+
+model Calendar {
+  id Int @id @default(autoincrement())
+  date DateTime @db.Date
+  note String @db.VarChar(1000)
+
+  user_id Int
+
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  CalendarMood CalendarMood[]
+
+  @@map("calendarentries")
+}
+
+model CalendarMood {
+  id Int @id @default(autoincrement())
+
+  calendar_id Int
+  calendar Calendar @relation(fields: [calendar_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  mood_id Int
+  mood Mood @relation(fields: [mood_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@map("calendarmood")
+}
+
+model Mood {
+  id Int @id @default(autoincrement())
+  type String @db.VarChar(100)
+
+  CalendarMood CalendarMood[]
+}
