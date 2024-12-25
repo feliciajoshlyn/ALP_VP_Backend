@@ -1,5 +1,12 @@
 import { Whack_A_Mole } from "@prisma/client"
 
+export interface WhackAMoleUpdateRequest {
+    mole_chosen: string
+    music_chosen: string
+    timed_highscore: number
+    endless_highscore: number
+    intense_highscore: number
+}
 export interface WhackAMoleResponse {
     id: number
     mole_chosen: string

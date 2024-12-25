@@ -34,7 +34,7 @@ model Whack_A_Mole {
   endless_highscore Int @default(0)
   intense_highscore Int @default(0)
 
-  user_id Int
+  user_id Int @unique
 
   user User @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   @@map("whack_a_mole")

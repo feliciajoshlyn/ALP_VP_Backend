@@ -6,6 +6,7 @@ import { UserValidation } from "../validations/user-validation";
 import { Validation } from "../validations/validation";
 import bcrypt from "bcrypt"
 import {v4 as uuid} from "uuid"
+import { WAMService } from "./wam-service";
 
 
 export class UserService {
@@ -41,6 +42,8 @@ export class UserService {
                 token: uuid()
             }
         })
+
+        await WAMService.createWAMData(user);
 
         return toUserResponse(user)
     }
