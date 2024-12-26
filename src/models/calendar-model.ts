@@ -1,16 +1,20 @@
 import { Calendar, CalendarMood } from "@prisma/client";
 
 export interface CalendarEntryCreateRequest {
-    date: string;
-    note: string;
-    moods: number[];
+    date: string
+    note: string
+    moods: number[]
+}
+
+export interface GetCalendarRequest {
+    date: string
 }
 
 export interface CalendarResponse {
-    id: number;
-    date: string;
-    note: string;
-    moods: number[];
+    id: number
+    date: string
+    note: string
+    moods: number[]
 }
 
 //combines jadi satu (single type) di Calendar but having the additional attributes of calendar mood

@@ -8,6 +8,7 @@ import {
 } from "../models/calendar-model";
 import { CalendarValidation } from "../validations/calendar-validation";
 import { Validation } from "../validations/validation";
+import { ResponseError } from "../errors/response.error";
 
 export class CalendarService {
 
@@ -77,9 +78,49 @@ export class CalendarService {
         return toCalendarResponseList(entries)
     }
 
-    //ini better pake date or calendar id
-    // static async updateEntry(user: User, date: Date): Promise<CalendarResponse> {
-        
-    // }
+    //pake id cz kan yg udah ada but diupdate
+    static async updateEntry(user: User, calendarId: number, req: CalendarEntryCreateRequest): Promise<string> {
+        const entryValidation = Validation.validate(CalendarValidation.CREATE, req)
+
+        const entry = await prismaClient.calendar.findFirst({
+            where:{
+                id: calendarId,
+                user_id: user.id
+            }
+        })
+
+        if(!entry){
+            throw new ResponseError(400, "Entry not found!")
+        }
+
+        await prismaClient.calendar.update({
+            where:{
+                id: calendarId,
+                user_id: user.id
+            },
+            data: entryValidation
+        })
+
+        if (entryValidation.moods.length > 0) {
+            // Delete existing moods for the calendar entry biar diganti
+            await prismaClient.calendarMood.deleteMany({
+                where: {
+                    calendar_id: calendarId,
+                },
+            });
+    
+            // Add updated moods
+            const moodData = entryValidation.moods.map((moodId) => ({
+                calendar_id: calendarId,
+                mood_id: moodId,
+            }));
+    
+            await prismaClient.calendarMood.createMany({
+                data: moodData,
+            });
+        }
+
+        return "Data Updated Successfully!"
+    }
 
 }
