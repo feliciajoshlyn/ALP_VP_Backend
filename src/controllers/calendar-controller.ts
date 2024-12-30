@@ -21,7 +21,8 @@ export class CalendarController {
 
     static async getEntry(req: UserRequest, res: Response, next: NextFunction) {
         try {
-            const dateString = req.body.date
+            const dateString = req.headers['x-date'] as string
+            
             if (!dateString) {
                 throw new ResponseError(400, "Date is required!")
             }
