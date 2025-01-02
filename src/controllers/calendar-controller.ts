@@ -87,4 +87,17 @@ export class CalendarController {
             next(error)
         }
     }
+
+    static async createOrUpdate(req: UserRequest, res: Response, next: NextFunction) {
+        try {
+            const request: CalendarEntryCreateRequest = req.body as CalendarEntryCreateRequest
+            const response = await CalendarService.createOrUpdate(req.user!, request)
+
+            res.status(200).json({
+                data: response
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
 }

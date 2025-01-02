@@ -114,7 +114,10 @@ export class CalendarService {
                 id: calendarId,
                 user_id: user.id
             },
-            data: entryValidation
+            data: {
+                date: entryValidation.date,
+                note: entryValidation.note
+            }
         })
 
         if (entryValidation.moods.length > 0) {
@@ -139,4 +142,28 @@ export class CalendarService {
         return "Data Updated Successfully!"
     }
 
+    static async createOrUpdate(user: User, req: CalendarEntryCreateRequest): Promise<string> {
+        const entryValidation = Validation.validate(CalendarValidation.CREATE, req)
+
+        const date = new Date(entryValidation.date)
+
+        const checkEntry = await prismaClient.calendar.findFirst({
+            where: {
+                date: date
+            }
+        })
+
+        entryValidation.date = new Date(entryValidation.date).toISOString();
+
+        if(checkEntry){
+            await this.updateEntry(user, checkEntry.id, entryValidation)
+
+            return "Data Updated Successfully"
+        }else{
+            await this.createCalEntry(user, entryValidation)
+            
+            return "Data Created Successfully"
+        }
+    }
 }
+
