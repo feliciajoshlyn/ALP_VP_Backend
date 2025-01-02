@@ -95,7 +95,6 @@ export class UserService {
             }, 
             data: {
                 token: null
-                //removes token
             }
         })
         return "Logout Successful!"

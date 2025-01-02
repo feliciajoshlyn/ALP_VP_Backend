@@ -1,10 +1,22 @@
-import { NextFunction, Response } from "express";
+import { NextFunction, Response, Request } from "express";
 import { UserRequest } from "../types/user-request";
-import { CalendarEntryCreateRequest, CalendarResponse } from "../models/calendar-model";
+import { CalendarEntryCreateRequest, CalendarResponse, MoodEntryCreateRequest } from "../models/calendar-model";
 import { CalendarService } from "../services/calendar-service";
 import { ResponseError } from "../errors/response.error";
 
 export class CalendarController {
+    static async createMood(req: Request, res: Response, next: NextFunction) {
+        try {
+            const request: MoodEntryCreateRequest = req.body as MoodEntryCreateRequest
+            const response = await CalendarService.addMood(request)
+
+            res.status(201).json({
+                data: response
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
 
     static async createEntry(req: UserRequest, res: Response, next: NextFunction) {
         try {
@@ -21,7 +33,7 @@ export class CalendarController {
 
     static async getEntry(req: UserRequest, res: Response, next: NextFunction) {
         try {
-            const dateString = req.get("X-DATA")
+            const dateString = req.get("X-DATE")
 
             if (!dateString) {
                 throw new ResponseError(400, "Date is required!")

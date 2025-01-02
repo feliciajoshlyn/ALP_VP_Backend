@@ -1,5 +1,9 @@
 import { Calendar, CalendarMood } from "@prisma/client";
 
+export interface MoodEntryCreateRequest {
+    type: string
+}
+
 export interface CalendarEntryCreateRequest {
     date: string
     note: string

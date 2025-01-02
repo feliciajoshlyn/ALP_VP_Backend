@@ -3,6 +3,7 @@ import { prismaClient } from "../application/database";
 import {
     CalendarEntryCreateRequest,
     CalendarResponse,
+    MoodEntryCreateRequest,
     toCalendarResponse,
     toCalendarResponseList,
 } from "../models/calendar-model";
@@ -11,6 +12,15 @@ import { Validation } from "../validations/validation";
 import { ResponseError } from "../errors/response.error";
 
 export class CalendarService {
+    static async addMood(req: MoodEntryCreateRequest): Promise<string>{
+        await prismaClient.mood.create({
+            data:{
+                type: req.type
+            }
+        })
+
+        return "Data Created Successfully"
+    }
 
     static async createCalEntry(
         user: User,
@@ -56,7 +66,13 @@ export class CalendarService {
 
         //if there's no entry for that certain date, returns null
         if (!entry) {
-            return null
+            return toCalendarResponse({
+                id: 0,
+                date: date,
+                note: "",
+                user_id: user.id,
+                CalendarMood: []
+            })
         }
 
         return toCalendarResponse(entry)
