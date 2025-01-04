@@ -149,7 +149,8 @@ export class CalendarService {
 
         const checkEntry = await prismaClient.calendar.findFirst({
             where: {
-                date: date
+                date: date,
+                user_id: user.id
             }
         })
 
