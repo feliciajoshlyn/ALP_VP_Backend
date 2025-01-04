@@ -20,6 +20,7 @@ model User {
   token String? @db.VarChar(100)
 
   Whack_A_Mole Whack_A_Mole[]
+  FidgetSpinner FidgetSpinner[]
 
   Calendar Calendar[]
 
@@ -38,6 +39,18 @@ model Whack_A_Mole {
 
   user User @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   @@map("whack_a_mole")
+}
+
+model FidgetSpinner {
+  id Int @id @default(autoincrement())
+  spinner_chosen String @db.VarChar(100)
+  music_chosen String @db.VarChar(100)
+  spins Int @default(0)
+
+  user_id Int @unique
+
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  @@map("FidgetSpinner")
 }
 
 model Calendar {
