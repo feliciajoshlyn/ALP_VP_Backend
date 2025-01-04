@@ -4,7 +4,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon src/main.ts"
+    "start": "nodemon src/main.ts",
+    "prisma:seed": "ts-node prisma/seed.ts",
+    "mas": "npx prisma migrate dev && npm run prisma:seed"
   },
   "keywords": [],
   "author": "",
