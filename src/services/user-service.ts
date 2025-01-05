@@ -7,6 +7,7 @@ import { Validation } from "../validations/validation";
 import bcrypt from "bcrypt"
 import {v4 as uuid} from "uuid"
 import { WAMService } from "./wam-service";
+import { FsService } from "./fs-service";
 
 
 export class UserService {
@@ -44,6 +45,7 @@ export class UserService {
         })
 
         await WAMService.createWAMData(user);
+        await FsService.createFsData(user);
 
         return toUserResponse(user)
     }
