@@ -43,9 +43,9 @@ model Whack_A_Mole {
 
 model FidgetSpinner {
   id Int @id @default(autoincrement())
-  spinner_chosen String @db.VarChar(100)
-  music_chosen String @db.VarChar(100)
-  spins Int @default(0)
+  spinner_chosen Int @default(0)
+  music_chosen Int @default(0)
+  spins_score Int @default(0)
 
   user_id Int @unique
 
