@@ -64,7 +64,7 @@ export class FsService {
         return "Setting Updated Successfully!"
     }
 
-    static async updateFsScore(user: User, req: FidgetSpinnerScoreUpdate): Promise<number>{
+    static async updateFsScore(user: User, req: FidgetSpinnerScoreUpdate): Promise<string>{
 
         const fidget_spinner = await prismaClient.fidgetSpinner.findFirst({
             where:{
@@ -85,6 +85,6 @@ export class FsService {
             }
         })
 
-        return fidget_spinner.spins_score
+        return "Score updated!"
     }
 }

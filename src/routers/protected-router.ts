@@ -14,8 +14,8 @@ protectedRouter.get("/api/wam", WAMController.getWAM)
 protectedRouter.put("/api/wam", WAMController.updateWAM)
 
 protectedRouter.get("/api/fs", FsController.getFs)
-protectedRouter.put("/api/fs_setting", FsController.updateSettingFs)
-protectedRouter.put("/api/fs_score", FsController.updateScoreFs)
+protectedRouter.put("/api/fs/setting", FsController.updateSettingFs)
+protectedRouter.put("/api/fs/score", FsController.updateScoreFs)
 
 protectedRouter.post("/api/entry", CalendarController.createEntry)
 protectedRouter.get("/api/entry", CalendarController.getEntryList)
